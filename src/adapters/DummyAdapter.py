@@ -33,7 +33,6 @@ import subprocess
 import os
 import shutil
 from exceptions import Exception
-import logging
 from logging.handlers import TimedRotatingFileHandler
 
 # Third party imports
@@ -43,6 +42,7 @@ import sh
 # VLEAD imports
 import BaseAdapter
 import VMUtils
+import Logging
 from dict2default import dict2default
 from settings import *
 
@@ -72,7 +72,7 @@ VZLIST = "/usr/sbin/vzlist -a"
 IP_ADDRESS_REGEX = r"[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}"
 #IP_ADDRESS_REGEX = 
 # "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
-DUMMY_LOGGER = logging.getLogger('DUMMY')
+DUMMY_LOGGER = Logging.get_logger('DummyAdapter.log')
 LOG_FILENAME = '/root/ovpl/log/dummyadapter.log'
 
 
@@ -250,19 +250,6 @@ def copy_vm_manager_files(vm_id):
     src_dir = current_file_path + VM_MANAGER_SRC_DIR
     dest_dir = "%s%s%s" % (VM_ROOT_DIR, vm_id, VM_MANAGER_DEST_DIR)
     DUMMY_LOGGER.debug("copy_vm_manager_files(): dest_dir = %s, src_dir = %s" % (dest_dir, src_dir))
-      
-
-def setup_logging():
-    DUMMY_LOGGER.setLevel(logging.DEBUG)   # make log level a setting
-    # Add the log message handler to the logger
-    myhandler = TimedRotatingFileHandler(
-                                LOG_FILENAME, when='midnight', backupCount=5)
-
-    formatter = logging.Formatter(
-        '%(asctime)s - %(levelname)s : [%(filename)s:%(lineno)d] : %(message)s',
-        datefmt='%Y-%m-%d %I:%M:%S %p')
-    myhandler.setFormatter(formatter)
-    DUMMY_LOGGER.addHandler(myhandler)
 
 def get_vm_ip( vm_id):
     vm_id = validate_vm_id(vm_id)
@@ -282,10 +269,6 @@ def test():
     #destroy_vm("99101")
     #destroy_vm("99102")
     #destroy_vm("99103")    
-
-
-setup_logging()
-LOG_FD = open(LOG_FILENAME, 'a')
 
 if __name__ == "__main__":
     # Start an HTTP server and wait for invocation

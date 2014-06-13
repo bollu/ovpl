@@ -64,8 +64,7 @@ class RestartVMHandler(tornado.web.RequestHandler):
 if __name__ == "__main__": 
     
      #create a logger
-    Logging.setup_logging()
-    Logger = Logging.LOGGER
+    Logger = Logging.get_logger("AdapterServer")
     Logger.debug("__main__()")
 
     tornado.options.parse_command_line()

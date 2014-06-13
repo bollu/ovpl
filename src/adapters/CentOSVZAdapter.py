@@ -97,11 +97,11 @@ class CentOSVZAdapter:
         CENTOSVZ_LOGGER.debug("CentOSVZAdapter: create_vm(): ip = %s, vm_id = %s, vm_create_args = %s, vm_set_args = %s" % \
                               (ip_address, vm_id, vm_create_args, vm_set_args))
         try:
-            ret_code = subprocess.check_call(VZCTL + " create " + vm_id + vm_create_args, stdout=LOG_FD, stderr=LOG_FD, shell=True)
+            ret_code = subprocess.check_call(VZCTL + " create " + vm_id + vm_create_args, shell=True)
             if ret_code == 0:
-                ret_code = subprocess.check_call(VZCTL + " start " + vm_id, stdout=LOG_FD, stderr=LOG_FD, shell=True)
+                ret_code = subprocess.check_call(VZCTL + " start " + vm_id, shell=True)
             if ret_code == 0:
-                ret_code = subprocess.check_call(VZCTL + " set " + vm_id + vm_set_args, stdout=LOG_FD, stderr=LOG_FD, shell=True)
+                ret_code = subprocess.check_call(VZCTL + " set " + vm_id + vm_set_args, shell=True)
             if ret_code == 0:
                 return vm_id
         except subprocess.CalledProcessError, e:
@@ -121,8 +121,8 @@ class CentOSVZAdapter:
     def destroy_vm(self, vm_id):
         vm_id = validate_vm_id(vm_id)
         try:
-            subprocess.check_call(VZCTL + " stop " + vm_id, stdout=LOG_FD, stderr=LOG_FD, shell=True)
-            subprocess.check_call(VZCTL + " destroy " + vm_id, stdout=LOG_FD, stderr=LOG_FD, shell=True)
+            subprocess.check_call(VZCTL + " stop " + vm_id, shell=True)
+            subprocess.check_call(VZCTL + " destroy " + vm_id, shell=True)
             return "Success"
         except subprocess.CalledProcessError, e:
             CENTOSVZ_LOGGER.error("Error destroying VM: " + str(e))
@@ -131,7 +131,7 @@ class CentOSVZAdapter:
     def restart_vm(self, vm_id):
         vm_id = validate_vm_id(vm_id)
         try:
-            subprocess.check_call(VZCTL + " restart " + vm_id, stdout=LOG_FD, stderr=LOG_FD, shell=True)
+	    subprocess.check_call(VZCTL + " restart " + vm_id, shell=True)
         except subprocess.CalledProcessError, e:
             raise e
         return start_vm_manager(vm_id)
@@ -145,7 +145,7 @@ class CentOSVZAdapter:
             settings.VM_MANAGER_DEST_DIR + "/" + settings.VM_MANAGER_SCRIPT + " &\'\""
         CENTOSVZ_LOGGER.debug("CentOSVZAdapter: start_vm_manager(): command = %s" % command)
         try:
-            subprocess.check_call(command, stdout=LOG_FD, stderr=LOG_FD, shell=True)
+            subprocess.check_call(command, shell=True)
         except Exception, e:
             CENTOSVZ_LOGGER.error("CentOSVZAdapter: start_vm_manager(): command = %s, ERROR = %s" % (command, str(e)))
             return False
@@ -156,7 +156,7 @@ class CentOSVZAdapter:
     def stop_vm(self, vm_id):
         vm_id = validate_vm_id(vm_id)
         try:
-            subprocess.check_call(VZCTL + " stop " + vm_id, stdout=LOG_FD, stderr=LOG_FD, shell=True)
+            subprocess.check_call(VZCTL + " stop " + vm_id, shell=True)
             return "Success"
         except subprocess.CalledProcessError, e:
             CENTOSVZ_LOGGER.error("Error stopping VM: " + str(e))
@@ -198,7 +198,7 @@ def copy_vm_manager_files(vm_id):
 def get_vm_ip(vm_id):
     vm_id = validate_vm_id(vm_id)
     try:
-        vzlist = subprocess.check_output(VZLIST + " | grep " + vm_id, stderr=LOG_FD, shell=True)
+        vzlist = subprocess.check_output(VZLIST + " | grep " + vm_id, shell=True)
         if vzlist == "":
             return                                  # raise exception?
         ip_address = re.search(IP_ADDRESS_REGEX, vzlist)
@@ -302,7 +302,6 @@ def test():
     #destroy_vm("99103")    
 
 setup_logging()
-LOG_FD = open(LOG_FILENAME, 'a')
 
 if __name__ == "__main__":
     # Start an HTTP server and wait for invocation
