@@ -1,7 +1,7 @@
 {
     "CONTROLLER_CONFIG": {
         "SERVER_PORT":8080,
-        "LOG_FILENAME":"/root/ovpl/log/ovpl.log"
+        "LOG_FILE_PATH":"/root/ovpl/log/ovpl.log"
     },
 
     "LABMANAGER_CONFIG": {
@@ -20,7 +20,7 @@
         "SERVER_PORT":8089,
         "GIT_CLONE_LOC":"/root/VMManager/lab-repo-cache/",
         "LAB_SPEC_LOC":"/scripts/labspec.json",
-        "LOG_FILENAME":"/root/VMManager/log/vmmanager.log"
+        "LOG_FILE_PATH":"/root/VMManager/log/vmmanager.log"
     },
 
     "API_ENDPOINTS": {

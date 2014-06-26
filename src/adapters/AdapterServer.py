@@ -22,6 +22,9 @@ from tornado.options import define, options
 
 import Logging
 
+Logger = Logging.get_controller_logger()
+
+
 define("port", default=8000, help="run on the given port", type=int)
   
 
@@ -70,10 +73,6 @@ class RestartVMHandler(tornado.web.RequestHandler):
 if __name__ == "__main__": 
     
      #create a logger
-    Logging.setup_logging()
-    Logger = Logging.LOGGER
-    Logger.debug("__main__()")
-
     tornado.options.parse_command_line()
 
 

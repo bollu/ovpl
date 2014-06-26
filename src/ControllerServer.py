@@ -28,6 +28,8 @@ import Logging
 define("port", default=8000, help="run on the given port", type=int)
 
 
+Logger = Logging.get_controller_logger()
+
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.render('index.html')
@@ -47,10 +49,13 @@ if __name__ == "__main__":
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),
         debug = True)
+    
     http_server = tornado.httpserver.HTTPServer(app) 
     current_file_path = os.path.dirname(os.path.abspath(__file__))
     config_spec = json.loads(open(current_file_path + "/../config/config.json").read())
     options.port = config_spec["CONTROLLER_CONFIG"]["SERVER_PORT"]
-    Logging.LOGGER.debug("ControllerServer: It will run on port : " + str(options.port))
+    
+    Logger.debug("ControllerServer: It will run on port : " + str(options.port))
+    
     http_server.listen(options.port) 
     tornado.ioloop.IOLoop.instance().start()

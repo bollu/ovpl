@@ -3,5 +3,6 @@
 	"ADAPTER_PORT":8000,
 	"CREATE_URI":"/api/1.0/vm/create",
 	"DESTROY_URI":"/api/1.0/vm/destroy",
-	"RESTART_URI":"/api/1.0/vm/restart"
+	"RESTART_URI":"/api/1.0/vm/restart",
+	"LOG_FILE_PATH"
 }

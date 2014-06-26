@@ -70,8 +70,7 @@ VZLIST = "/usr/sbin/vzlist -a"
 IP_ADDRESS_REGEX = r"[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}"
 #IP_ADDRESS_REGEX = 
 # "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
-CENTOSVZ_LOGGER = logging.getLogger('CENTOSVZ')
-LOG_FILENAME = '/root/ovpl/log/centosvzadapter.log'
+CENTOSVZ_LOGGER = logging.getLogger('CENTOSVZ', "./log/Adapter.log")
 
 
 class InvalidVMIDException(Exception):
@@ -281,18 +280,6 @@ def validate_vm_id(vm_id):
         raise InvalidVMIDException("Invalid VM ID.  Specify a smaller VM ID.")
     return str(vm_id)
 
-def setup_logging():
-    CENTOSVZ_LOGGER.setLevel(logging.DEBUG)   # make log level a setting
-    # Add the log message handler to the logger
-    myhandler = TimedRotatingFileHandler(
-                                LOG_FILENAME, when='midnight', backupCount=5)
-
-    formatter = logging.Formatter(
-        '%(asctime)s - %(levelname)s : [%(filename)s:%(lineno)d] : %(message)s',
-        datefmt='%Y-%m-%d %I:%M:%S %p')
-    myhandler.setFormatter(formatter)
-    CENTOSVZ_LOGGER.addHandler(myhandler)
-
 def test():
     #vm_spec = VMSpec.VMSpec({'lab_ID': 'test99'})
     import json
@@ -306,9 +293,6 @@ def test():
     #destroy_vm("99101")
     #destroy_vm("99102")
     #destroy_vm("99103")    
-
-setup_logging()
-LOG_FD = open(LOG_FILENAME, 'a')
 
 if __name__ == "__main__":
     # Start an HTTP server and wait for invocation

@@ -22,13 +22,14 @@ from State import State
 CREATE_PATH = "/api/1.0/vm/create"
 DESTROY_PATH = "/api/1.0/vm/destroy"
 
+Logger = Logging.get_controller_logger()
 
 class VMPool:
     """ Manages a pool of VMs or VMProxy's """
 
     def __init__(self, vmpool_id, vm_description, adapter_ip, adapter_port, create_path, destroy_path):
 
-        Logging.LOGGER.debug("VMPool: __init__(); poolID=%s, Desciption=%s, AdapterIP=%s, AdapterPort=%s, CreatePath=%s, DestroyPath=%s" % \
+        Logger.debug("VMPool: __init__(); poolID=%s, Desciption=%s, AdapterIP=%s, AdapterPort=%s, CreatePath=%s, DestroyPath=%s" % \
                              (vmpool_id, vm_description, adapter_ip, adapter_port, create_path, destroy_path))        
 
         self.system = State.Instance()
@@ -75,17 +76,17 @@ class VMPool:
                 }
             }
 
-        Logging.LOGGER.debug("VMPool: create_vm(); poolID=%s, Desciption=%s, AdapterIP=%s, AdapterPort=%s, CreatePath=%s, DestroyPath=%s" % \
+        Logger.debug("VMPool: create_vm(); poolID=%s, Desciption=%s, AdapterIP=%s, AdapterPort=%s, CreatePath=%s, DestroyPath=%s" % \
                              (self.vmpool_id, self.vm_description, self.adapter_ip, self.adapter_port, self.create_path, self.destroy_path))
 
         adapter_url = "%s:%s%s" % (self.adapter_ip, self.adapter_port, self.create_path)
         payload = {'lab_spec': json.dumps(lab_spec)}
 
-        Logging.LOGGER.debug("VMPool: create_vm(); adapter_url = %s, payload = %s" % (adapter_url, str(payload)))
+        Logger.debug("VMPool: create_vm(); adapter_url = %s, payload = %s" % (adapter_url, str(payload)))
 
         try:
             result = requests.post(url=adapter_url, data=payload)
-            Logging.LOGGER.debug("VMPool: create_vm(): Response text from adapter: " + result.text)
+            Logger.debug("VMPool: create_vm(): Response text from adapter: " + result.text)
             if result.status_code == requests.codes.ok:
                 vm_id = result.json()["vm_id"]
                 vm_ip = result.json()["vm_ip"]
@@ -94,25 +95,25 @@ class VMPool:
             else:
                 raise Exception("VMPool: create_vm(): Error creating VM: " + result.text)
         except Exception, e:
-            Logging.LOGGER.error("VMPool: create_vm(): Error communicating with adapter: " + str(e))
+            Logger.error("VMPool: create_vm(): Error communicating with adapter: " + str(e))
             raise Exception("VMPool: create_vm(): Error creating VM: " + str(e))
 
     def destroy_vm(self, vm_id):
         # Invoke platform adapter
         # Delete entry from VMs list
-        Logging.LOGGER.debug("VMPool.destroy_vm()")
+        Logger.debug("VMPool.destroy_vm()")
         adapter_url = "%s:%s%s" % (self.adapter_ip, self.adapter_port, self.destrpy_path)
         payload = {'vm_id': vm_id}
         try:
             result = requests.post(url=adapter_url, data=payload)
-            Logging.LOGGER.debug("Response text from adapter: " + result.text)
+            Logger.debug("Response text from adapter: " + result.text)
             if result.status_code == requests.codes.ok and "Success" in result.text:
-                Logging.LOGGER.debug("VMPool.destroy_vm()")
+                Logger.debug("VMPool.destroy_vm()")
                 return True
             else:
-                Logging.LOGGER.error("Error destroying vm: " + result.text)
+                Logger.error("Error destroying vm: " + result.text)
         except Exception, e:
-            Logging.LOGGER.error("Error communicating with adapter: " + str(e))
+            Logger.error("Error communicating with adapter: " + str(e))
 
     def save_state(self, lab_id, vm_id):
         for r in self.system.state:
@@ -126,7 +127,7 @@ class VMPool:
             self.save_state(lab_id, vm_id)
 
     def undeploy_lab(self, lab_id):
-        Logging.LOGGER.debug("VMPool.undeploy_lab()")
+        Logger.debug("VMPool.undeploy_lab()")
         map(lambda vm_id: self.destroy_and_save(lab_id, vm_id), self.dedicated_vms(lab_id))
 
     def dedicated_vms(self, lab_id):
