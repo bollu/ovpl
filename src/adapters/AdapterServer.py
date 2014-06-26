@@ -22,7 +22,8 @@ from tornado.options import define, options
 
 import Logging
 
-Logger = Logging.get_controller_logger()
+#Logger will be setup in main()
+Logger = None
 
 
 define("port", default=8000, help="run on the given port", type=int)
@@ -81,13 +82,15 @@ if __name__ == "__main__":
         current_file_path = os.path.dirname(os.path.abspath(__file__))
         config_spec = json.loads(open(current_file_path + "/config.json").read())
     except IOError as e:
-        Logger.error("unable to load config.json. Exception: " + str(e))
+        print "unable to load config.json. Exception: " + str(e)
         raise e
     except  Exception as e:
-        Logger.error("unable to parse config.json. Exception: " + str(e))
+        print "unable to parse config.json. Exception: " + str(e)
         raise e
 
-   
+    #init the logger
+    Logging.setup_adapter_log(config_spec)
+    Logger = Logging.get_adapter_logger() 
 
     #load the adapter class and instantiate the adapter
     adapter_name = config_spec['ADAPTER_NAME']

@@ -4,8 +4,7 @@ import os.path
 import Logging
 
 
-Logger = Logging.get_vmmanager_looger()
-
+get_logger = Logging.get_vmmanager_logger
 
 class EmptyLabActionError(Exception):
     pass
@@ -41,19 +40,19 @@ class LabActionScript:
     def run(self):
         """Runs a command. Waits for the command to finish."""
         if len(self._cmd) == 0:
-            Logger.error("LabActionScript::run() - No command to run")
+            get_logger().error("LabActionScript::run() - No command to run")
             raise EmptyLabActionError("No command to run")
         try:
         	#self._cmd[0] = os.path.join(self._path_prefix, self._cmd[0])
-            Logger.debug("LabActionScript::run() - " + self._cmd)
+            get_logger().debug("LabActionScript::run() - " + self._cmd)
             subprocess.check_call(self._cmd, shell=True)
             self._state = LabActionScript.ACTION_COMPLETED
         except subprocess.CalledProcessError as cpe:
-            Logger.error("LabActionScript::run() - " + str(cpe))
+            get_logger().error("LabActionScript::run() - " + str(cpe))
             self._state = LabActionScript.ACTION_UNSUCCESSFUL
             print cpe
         except OSError as ose:
-            Logger.error("LabActionScript::run() - " + str(ose))
+            get_logger().error("LabActionScript::run() - " + str(ose))
             self._state = LabActionScript.ACTION_UNSUCCESSFUL
             print ose
 

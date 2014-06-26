@@ -21,7 +21,8 @@ from tornado.options import define, options
 import VMManager
 import Logging
 
-Logger = Logging.get_vmmanager_looger()
+#Logger is setup in main()
+Logger = None 
 
 
 define("port", default=8089, help="run on the given port", type=int)
@@ -70,6 +71,21 @@ class TestLabHandler(tornado.web.RequestHandler):
 
 
 if __name__ == "__main__":
+    import os
+    import json
+    #load config file
+    current_file_path = os.path.dirname(os.path.abspath(__file__))
+    #TODO: fix the config file (split it out that is)
+    config_spec = json.loads(open(current_file_path + "/../../config/config.json").read())
+ 
+    
+    #setup logger
+    Logging.setup_vmmanager_log(config_spec)
+    global Logger
+    Logger = Logging.get_vmmanager_logger()
+
+    
+    
     Logger.info("VMManagerServer: __main()")
     tornado.options.parse_command_line()
     app = tornado.web.Application(
@@ -83,6 +99,8 @@ if __name__ == "__main__":
             (r"/api/1.0/test-lab", TestLabHandler)
         ],
         debug = False)
+    
+   
     http_server = tornado.httpserver.HTTPServer(app) 
     http_server.listen(options.port) 
     tornado.ioloop.IOLoop.instance().start()

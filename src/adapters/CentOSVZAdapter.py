@@ -33,7 +33,6 @@ import subprocess
 import os
 import shutil
 from exceptions import Exception
-import logging
 from logging.handlers import TimedRotatingFileHandler
 
 # Third party imports
@@ -45,6 +44,7 @@ import VMUtils
 from dict2default import dict2default
 import settings
 import BaseAdapter
+import Logging
 
 # UGLY DUCK PUNCHING: Backporting check_output from 2.7 to 2.6
 if "check_output" not in dir(subprocess):
@@ -70,8 +70,7 @@ VZLIST = "/usr/sbin/vzlist -a"
 IP_ADDRESS_REGEX = r"[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}"
 #IP_ADDRESS_REGEX = 
 # "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
-CENTOSVZ_LOGGER = logging.getLogger('CENTOSVZ', "./log/Adapter.log")
-
+CENTOSVZ_LOGGER = Logging.get_adapter_logger()
 
 class InvalidVMIDException(Exception):
     def __init__(msg):
@@ -203,7 +202,7 @@ def copy_vm_manager_files(vm_id):
 def get_vm_ip(vm_id):
     vm_id = validate_vm_id(vm_id)
     try:
-        vzlist = subprocess.check_output(VZLIST + " | grep " + vm_id, stderr=LOG_FD, shell=True)
+        vzlist = subprocess.check_output(VZLIST + " | grep " + vm_id, shell=True)
         if vzlist == "":
             return                                  # raise exception?
         ip_address = re.search(IP_ADDRESS_REGEX, vzlist)

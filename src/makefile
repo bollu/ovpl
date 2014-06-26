@@ -5,7 +5,7 @@ test: stop-server
 
 start-server:
 	python2 adapters/AdapterServer.py &
-	python2 Controller.py &
+	python2 ControllerServer.py &
 	
 stop-server:
 	-killall python2 #HACK!

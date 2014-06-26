@@ -9,14 +9,13 @@ import json
 import os.path
 from State import State
 
-Logger = Logging.get_controller_logger()
-
+get_logger = Logging.get_controller_logger
 
 class VMPoolManager:
 
     def __init__(self):
         """ State should be rewriten"""
-        Logger.debug("VMPoolManager: _init_()")
+        get_logger().debug("VMPoolManager: _init_()")
         self.system = State.Instance()
         
         self.VMPools = []
@@ -34,11 +33,11 @@ class VMPoolManager:
                               create_uri,  \
                               destroy_uri)
 
-        Logger.debug("VMPoolManager: _init_();  vm_pools = %s" % (str(self.VMPools)))
+        get_logger().debug("VMPoolManager: _init_();  vm_pools = %s" % (str(self.VMPools)))
 
 
     def add_vm_pool(self, vm_pool_id, vm_description, adapter_ip, adapter_port, create_path, destroy_path):
-        Logger.debug("VMPoolManager: add_vm_pool(); %s, %s, %s, %s, %s, %s" % \
+        get_logger().debug("VMPoolManager: add_vm_pool(); %s, %s, %s, %s, %s, %s" % \
                              (vm_pool_id, vm_description, adapter_ip, adapter_port, create_path, destroy_path))
         self.VMPools.append(VMPool.VMPool(vm_pool_id, vm_description, adapter_ip, adapter_port, create_path, destroy_path))
 
@@ -50,7 +49,7 @@ class VMPoolManager:
         3. For Amazon EC2
         
         """
-        Logger.debug("VMPoolManager: get_available_pool()")
+        get_logger().debug("VMPoolManager: get_available_pool()")
         if self.is_lab_static(lab_spec):
             return self.VMPools[1]
         elif self.lab_on_windows(lab_spec):
@@ -65,16 +64,16 @@ class VMPoolManager:
         return False
 
     def create_vm(self, lab_spec):
-        Logger.debug("VMPoolManager: create_vm()")
+        get_logger().debug("VMPoolManager: create_vm()")
         vmpool = self.get_available_pool(lab_spec)
         return vmpool.create_vm(lab_spec)
 
     def undeploy_lab(self, lab_id):
-        Logger.debug("VMPoolManager: undeploy_lab()")
+        get_logger().debug("VMPoolManager: undeploy_lab()")
         used_pools = self.get_used_pools(lab_id)
         for pool_id in used_pools:
             self.VMPools[pool_id].undeploy_lab(lab_id)
 
     def get_used_pools(self, lab_id):
-        Logger.debug("VMPoolManager: get_used_pools()")
+        get_logger().debug("VMPoolManager: get_used_pools()")
         return [d['vmpool_info']['vmpool_id'] for d in self.system.state if d['lab_spec']['lab_id']==lab_id]

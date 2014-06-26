@@ -23,7 +23,6 @@ import subprocess
 import os
 import shutil
 from exceptions import Exception
-import logging
 from logging.handlers import TimedRotatingFileHandler
 
 # Third party imports
@@ -35,7 +34,7 @@ import BaseAdapter
 import VMUtils
 from dict2default import dict2default
 from settings import *
-
+import Logging
 
 
 # UGLY DUCK PUNCHING: Backporting check_output from 2.7 to 2.6
@@ -62,7 +61,7 @@ VZLIST = "/usr/sbin/vzlist -a"
 IP_ADDRESS_REGEX = r"[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}"
 #IP_ADDRESS_REGEX = 
 # "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
-DUMMY_LOGGER = logging.getLogger('DUMMY')
+DUMMY_LOGGER = Logging.get_adapter_logger() 
 
 
 #list of IP addressses since we cannot expect vz to know cause it's a dummy

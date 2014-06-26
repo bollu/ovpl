@@ -25,8 +25,7 @@ from LabActionRunner import LabActionRunner
 GIT_CLONE_LOC = "/root/VMManager/lab-repo-cache/"
 LAB_SPEC_LOC = "/scripts/labspec.json"
 
-Logger = Logging.get_vmmanager_looger()
-
+get_logger = Logging.get_vmmanager_logger
 
 class LabSpecInvalid(Exception):
     def __init__(self, msg):
@@ -52,30 +51,30 @@ if "check_output" not in dir(subprocess):
 def execute(command):
     # do some validation
     try:
-        Logger.info("Command executed: " + command)
+        get_logger().info("Command executed: " + command)
         return subprocess.check_output(command, shell=True)
     except Exception, e:
-        Logger.error("Execution failed: " + str(e))
+        get_logger().error("Execution failed: " + str(e))
         return "Error executing the command: " + str(e)
 
 def running_time():
-    Logger.info("Command executed: uptime")
+    get_logger().info("Command executed: uptime")
     return execute("uptime")
 
 def mem_usage():
-    Logger.info("Command executed: free -mg")
+    get_logger().info("Command executed: free -mg")
     return execute("free -mg")
 
 def disk_usage():
-    Logger.info("Command executed: df -h")
+    get_logger().info("Command executed: df -h")
     return execute("df -h")
 
 def running_processes():
-    Logger.info("Command executed: ps -e -o command")
+    get_logger().info("Command executed: ps -e -o command")
     return execute("ps -e -o command")
 
 def cpu_load():
-    Logger.info("Command executed: ps -e -o pcpu")
+    get_logger().info("Command executed: ps -e -o pcpu")
     return execute("ps -e -o pcpu | awk '{s+=$1} END {print s\"%\"}'")
 
 def test_lab(lab_src_url, version=None):
@@ -109,20 +108,20 @@ def test_lab(lab_src_url, version=None):
 
     def clone_repo(repo_name):
         clone_cmd = "git clone %s %s%s" % (lab_src_url, GIT_CLONE_LOC,repo_name)
-        Logger.debug(clone_cmd)
+        get_logger().debug(clone_cmd)
         try:
             subprocess.check_call(clone_cmd, shell=True)
         except Exception, e:
-            Logger.error("git clone failed for repo %s: %s" % (repo_name, str(e)))
+            get_logger().error("git clone failed for repo %s: %s" % (repo_name, str(e)))
             raise e
 
     def pull_repo(repo_name):
         pull_cmd = "git --git-dir=%s/.git pull" % (GIT_CLONE_LOC + repo_name)
-        Logger.debug(pull_cmd)
+        get_logger().debug(pull_cmd)
         try:
             subprocess.check_call(pull_cmd, shell=True)
         except Exception, e:
-            Logger.error("git pull failed for repo %s: %s" % (repo_name, str(e)))
+            get_logger().error("git pull failed for repo %s: %s" % (repo_name, str(e)))
             raise e
 
     def checkout_version(repo_name):
@@ -130,25 +129,25 @@ def test_lab(lab_src_url, version=None):
             try:
                 checkout_cmd = shlex.split("git --git-dir=%s checkout %s" \
                                     % ((GIT_CLONE_LOC + repo_name), version))
-                Logger.debug(checkout_cmd)
+                get_logger().debug(checkout_cmd)
                 subprocess.check_call(checkout_cmd)
             except Exception, e:
-                Logger.error("git checkout failed for repo %s tag %s: %s" \
+                get_logger().error("git checkout failed for repo %s tag %s: %s" \
                                     % (repo_name, version, str(e)))
                 raise e
 
     def get_lab_spec(repo_name):
         repo_path = GIT_CLONE_LOC + repo_name + LAB_SPEC_LOC
         if not os.path.exists(repo_path):
-            Logger.error("Lab spec file not found")
+            get_logger().error("Lab spec file not found")
             raise LabSpecInvalid("Lab spec file not found")
         try:
             return json.loads(open(repo_path).read())
         except Exception, e:
-            Logger.error("Lab spec JSON invalid: " + str(e))
+            get_logger().error("Lab spec JSON invalid: " + str(e))
             raise LabSpecInvalid("Lab spec JSON invalid: " + str(e))
 
-    Logger.info("Starting test_lab")
+    get_logger().info("Starting test_lab")
     repo_name = construct_repo_name()
     if repo_exists(repo_name):
         pull_repo(repo_name)
@@ -171,10 +170,10 @@ def test_lab(lab_src_url, version=None):
         lar = LabActionRunner(get_runtime_actions_steps(lab_spec))
         lar.run_init_lab()
         lar.run_start_lab()
-        Logger.info("Finishing test_lab: Success")
+        get_logger().info("Finishing test_lab: Success")
         return "Success"
     except Exception, e:
-        Logger.error("VMManager.test_lab failed: " + str(e))
+        get_logger().error("VMManager.test_lab failed: " + str(e))
         return "Test lab failed"
 
 

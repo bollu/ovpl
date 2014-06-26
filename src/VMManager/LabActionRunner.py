@@ -3,8 +3,7 @@ import json
 import Logging
 from LabActionScript import LabActionScript
 
-Logger = Logging.get_vmmanager_looger()
-
+get_logger = Logging.get_vmmanager_logger
 
 class LabActionRunner:
     """
@@ -47,27 +46,27 @@ class LabActionRunner:
         build_steps = self._actions[LabActionScript.ACTION_BUILD_KEY]
 
         def configure(steps):
-            Logger.info("Configuring the lab...")
+            get_logger().info("Configuring the lab...")
             if steps.has_key(LabActionScript.CONFIGURE_SCRIPT_KEY):
     	        self._run_(steps[LabActionScript.CONFIGURE_SCRIPT_KEY])
         
         def pre_build(steps):
-            Logger.info("Running the pre-build scripts...")
+            get_logger().info("Running the pre-build scripts...")
             if steps.has_key(LabActionScript.PRE_BUILD_SCRIPT_KEY):
     	        self._run_(steps[LabActionScript.PRE_BUILD_SCRIPT_KEY])
         
         def build(steps):
-            Logger.info("Running the build scripts...")
+            get_logger().info("Running the build scripts...")
             if steps.has_key(LabActionScript.BUILD_SCRIPT_KEY):
     	        self._run_(steps[LabActionScript.BUILD_SCRIPT_KEY])
         
         def post_build(steps):
-            Logger.info("Running the post-build scripts...")
+            get_logger().info("Running the post-build scripts...")
             if steps.has_key(LabActionScript.POST_BUILD_SCRIPT_KEY):
     	        self._run_(steps[LabActionScript.POST_BUILD_SCRIPT_KEY])
 
         def status(steps):
-            Logger.info("Checking the status of the build...")
+            get_logger().info("Checking the status of the build...")
             if steps.has_key(LabActionScript.CHECK_STATUS_SCRIPT_KEY):
     	        return self._run_(steps[LabActionScript.CHECK_STATUS_SCRIPT_KEY])
             return 0
@@ -80,31 +79,31 @@ class LabActionRunner:
 
     # actions that correspond with the runtime states of a lab
     def run_init_lab(self):
-        Logger.debug("LabActionRunner::run_init_lab()")
+        get_logger().debug("LabActionRunner::run_init_lab()")
     	self._run_action_(LabActionScript.INIT_SCRIPT_KEY)
 
     def run_start_lab(self):
-        Logger.debug("LabActionRunner::run_start_lab()")
+        get_logger().debug("LabActionRunner::run_start_lab()")
     	self._run_action_(LabActionScript.START_SCRIPT_KEY)
 
     def run_shutdown_lab(self):
-        Logger.debug("LabActionRunner::run_shutdown_lab()")
+        get_logger().debug("LabActionRunner::run_shutdown_lab()")
     	self._run_action_(LabActionScript.SHUTDOWN_SCRIPT_KEY)
 
     def run_clean_lab(self):
-        Logger.debug("LabActionRunner::run_clean_lab()")
+        get_logger().debug("LabActionRunner::run_clean_lab()")
     	self._run_action_(LabActionScript.CLEAN_SCRIPT_KEY)
     
     def run_backup_lab(self):
-        Logger.debug("LabActionRunner::run_backup_lab()")
+        get_logger().debug("LabActionRunner::run_backup_lab()")
     	self._run_action_(LabActionScript.BACKUP_SCRIPT_KEY)
 
     def run_stats_lab(self):
-        Logger.debug("LabActionRunner::run_stats_lab()")
+        get_logger().debug("LabActionRunner::run_stats_lab()")
     	self._run_action_(LabActionScript.STATS_SCRIPT_KEY)
 
     def run_publish_lab(self):
-        Logger.debug("LabActionRunner::run_publish_lab()")
+        get_logger().debug("LabActionRunner::run_publish_lab()")
     	self._run_action_(LabActionScript.PUBLISH_SCRIPT_KEY)
 
 

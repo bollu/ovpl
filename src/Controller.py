@@ -13,18 +13,16 @@ import VMPoolManager
 import Logging
 from State import State
 
-Logger = None
+get_logger = Logging.get_controller_logger
 
 class Controller:
     def __init__(self):
         self.system = State.Instance()
         lab_spec = {}
-        global Logger
-        Logger = Logging.get_controller_logger()
 
 
     def test_lab(self, lab_id, lab_src_url, revision_tag=None):
-        Logger.debug("Controller.test_lab() for lab ID %s and git url %s" \
+        get_logger().debug("Controller.test_lab() for lab ID %s and git url %s" \
                             % (lab_id, lab_src_url))
         try:
             lab_spec = LabManager.get_lab_reqs(lab_id, lab_src_url, revision_tag)
@@ -33,30 +31,30 @@ class Controller:
                """ TODO: Undeploy , fnd proper place to invoke undeploy""" 
                self.undeploy_lab(lab_id)
             vmpoolmgr = VMPoolManager.VMPoolManager()
-            Logger.debug("Controller: test_lab(); invoking create_vm() on vmpoolmgr")
+            get_logger().debug("Controller: test_lab(); invoking create_vm() on vmpoolmgr")
             lab_state = vmpoolmgr.create_vm(lab_spec)
-            Logger.debug("Controller: test_lab(): Returned from VMPool = %s" % (str(lab_state)))
+            get_logger().debug("Controller: test_lab(): Returned from VMPool = %s" % (str(lab_state)))
             ip = lab_state['vm_info']['vm_ip']
             port = lab_state['vm_info']['vmm_port']
             vmmgrurl = "http://" + ip
-            Logger.debug("Controller: test_lab(): vmmgrurl = %s" % (vmmgrurl))
+            get_logger().debug("Controller: test_lab(): vmmgrurl = %s" % (vmmgrurl))
             try:
                 (ret_val, ret_str) = LabManager.test_lab(vmmgrurl, port, lab_src_url, revision_tag)
                 if(ret_val):
                     self.update_state(lab_state)
-                    Logger.info("Controller: test_lab(): test succcessful")
+                    get_logger().info("Controller: test_lab(): test succcessful")
                     return ip
                 else:
-                    Logger.error("Controller: test_lab(); Test failed with error:" + str(ret_str))
+                    get_logger().error("Controller: test_lab(); Test failed with error:" + str(ret_str))
                     return "Test failed: See log file for errors"
             except Exception, e:
-                Logger.error("Controller: test_lab(); Test failed with error: " + str(e))
+                get_logger().error("Controller: test_lab(); Test failed with error: " + str(e))
                 return "Test failed: See log file for errors"
                 """ TODO: Garbage collection clean up for the created VM """ 
             finally:
                 self.system.save()
         except Exception, e:
-            Logger.error("Controller: test_lab(): Test failed with error: " + str(e))
+            get_logger().error("Controller: test_lab(): Test failed with error: " + str(e))
             return "Test failed: See log file for errors"
 
     def update_lab_spec(self, lab_spec, lab_id, lab_src_url, revision_tag):
@@ -72,7 +70,7 @@ class Controller:
         self.system.state.append(state)
 
     def undeploy_lab(self, lab_id):
-        Logger.debug("Controller.undeploy_lab for lab_id %s" % lab_id)
+        get_logger().debug("Controller.undeploy_lab for lab_id %s" % lab_id)
         vmpoolmgr = VMPoolManager.VMPoolManager()
         vmpoolmgr.undeploy_lab(lab_id)
         return "Success"
