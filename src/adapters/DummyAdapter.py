@@ -134,7 +134,7 @@ class DummyAdapter(object):
     def stop_vm(self, vm_id):
         vm_id = validate_vm_id(vm_id)
         #try:
-        #    subprocess.check_call(VZCTL + " stop " + vm_id, stdout=LOG_FD, stderr=LOG_FD, shell=True)
+        #    subprocess.check_call(VZCTL + " stop " + vm_id, shell=True)
         #    return "Success"
         #except subprocess.CalledProcessError, e:
         #    CENTOSVZ_LOGGER.error("Error stopping VM: " + str(e))
@@ -143,8 +143,8 @@ class DummyAdapter(object):
     def destroy_vm(self, vm_id):
         vm_id = validate_vm_id(vm_id)
         return "Success"
-        #  subprocess.check_call(VZCTL + " stop " + vm_id, stdout=LOG_FD, stderr=LOG_FD, shell=True)
-        #    subprocess.check_call(VZCTL + " destroy " + vm_id, stdout=LOG_FD, stderr=LOG_FD, shell=True)
+        #  subprocess.check_call(VZCTL + " stop " + vm_id, shell=True)
+        #    subprocess.check_call(VZCTL + " destroy " + vm_id, shell=True)
         #return "Success"
         #except subprocess.CalledProcessError, e:
         #    CENTOSVZ_LOGGER.error("Error destroying VM: " + str(e))

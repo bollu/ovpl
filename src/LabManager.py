@@ -48,7 +48,7 @@ def get_lab_reqs(lab_id, lab_src_url, version=None):
         Logging.LOGGER.debug("LabManager, clone_repo(): clone_cmd = %s" % (clone_cmd))
 
         try:
-            subprocess.check_call(clone_cmd, stdout=Logging.LOG_FD, stderr=Logging.LOG_FD)
+            subprocess.check_call(clone_cmd)
         except Exception, e:
             Logging.LOGGER.error("LabManager: clone_repo(): git clone failed: %s %s" % (repo_name, str(e)))
             raise e
@@ -58,7 +58,7 @@ def get_lab_reqs(lab_id, lab_src_url, version=None):
         pull_cmd = "git --git-dir=%s/.git pull" % (GIT_CLONE_LOC + repo_name)
         Logging.LOGGER.debug(pull_cmd)
         try:
-            subprocess.check_call(pull_cmd, stdout=Logging.LOG_FD, stderr=Logging.LOG_FD, shell=True)
+            subprocess.check_call(pull_cmd, shell=True)
         except Exception, e:
             Logging.LOGGER.error("LabManager: pull_repo(), git pull failed: %s %s" % (repo_name, str(e)))
             raise e
@@ -68,7 +68,7 @@ def get_lab_reqs(lab_id, lab_src_url, version=None):
         reset_cmd = "git --git-dir=%s/.git reset --hard" % (GIT_CLONE_LOC + repo_name)
         Logging.LOGGER.debug(reset_cmd)
         try:
-            subprocess.check_call(reset_cmd, stdout=Logging.LOG_FD, stderr=Logging.LOG_FD, shell=True)
+            subprocess.check_call(reset_cmd, shell=True)
         except Exception, e:
             Logging.LOGGER.error("LabManager: reset_repo(), git reset failed: %s %s" % (repo_name, str(e)))
             raise e
@@ -79,7 +79,7 @@ def get_lab_reqs(lab_id, lab_src_url, version=None):
             try:
                 checkout_cmd = shlex.split("git --git-dir=%s checkout %s" \
                                     % ((GIT_CLONE_LOC + repo_name), version))
-                subprocess.check_call(checkout_cmd, stdout=Logging.LOG_FD, stderr=Logging.LOG_FD)
+                subprocess.check_call(checkout_cmd)
             except Exception, e:
                 Logging.LOGGER.error("git checkout failed for repo %s tag %s: %s" \
                                     % (repo_name, version, str(e)))

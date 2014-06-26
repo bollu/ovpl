@@ -42,7 +42,7 @@ class LabActionScript:
         try:
         	#self._cmd[0] = os.path.join(self._path_prefix, self._cmd[0])
             Logging.LOGGER.debug("LabActionScript::run() - " + self._cmd)
-            subprocess.check_call(self._cmd, stdout=Logging.LOG_FD, stderr=Logging.LOG_FD, shell=True)
+            subprocess.check_call(self._cmd, shell=True)
             self._state = LabActionScript.ACTION_COMPLETED
         except subprocess.CalledProcessError as cpe:
             Logging.LOGGER.error("LabActionScript::run() - " + str(cpe))

@@ -48,7 +48,7 @@ def execute(command):
     # do some validation
     try:
         Logging.LOGGER.info("Command executed: " + command)
-        return subprocess.check_output(command, stderr=Logging.LOG_FD, shell=True)
+        return subprocess.check_output(command, shell=True)
     except Exception, e:
         Logging.LOGGER.error("Execution failed: " + str(e))
         return "Error executing the command: " + str(e)
@@ -106,7 +106,7 @@ def test_lab(lab_src_url, version=None):
         clone_cmd = "git clone %s %s%s" % (lab_src_url, GIT_CLONE_LOC,repo_name)
         Logging.LOGGER.debug(clone_cmd)
         try:
-            subprocess.check_call(clone_cmd, stdout=Logging.LOG_FD, stderr=Logging.LOG_FD, shell=True)
+            subprocess.check_call(clone_cmd, shell=True)
         except Exception, e:
             Logging.LOGGER.error("git clone failed for repo %s: %s" % (repo_name, str(e)))
             raise e
@@ -115,7 +115,7 @@ def test_lab(lab_src_url, version=None):
         pull_cmd = "git --git-dir=%s/.git pull" % (GIT_CLONE_LOC + repo_name)
         Logging.LOGGER.debug(pull_cmd)
         try:
-            subprocess.check_call(pull_cmd, stdout=Logging.LOG_FD, stderr=Logging.LOG_FD, shell=True)
+            subprocess.check_call(pull_cmd, shell=True)
         except Exception, e:
             Logging.LOGGER.error("git pull failed for repo %s: %s" % (repo_name, str(e)))
             raise e
@@ -126,7 +126,7 @@ def test_lab(lab_src_url, version=None):
                 checkout_cmd = shlex.split("git --git-dir=%s checkout %s" \
                                     % ((GIT_CLONE_LOC + repo_name), version))
                 Logging.LOGGER.debug(checkout_cmd)
-                subprocess.check_call(checkout_cmd, stdout=Logging.LOG_FD, stderr=Logging.LOG_FD)
+                subprocess.check_call(checkout_cmd)
             except Exception, e:
                 Logging.LOGGER.error("git checkout failed for repo %s tag %s: %s" \
                                     % (repo_name, version, str(e)))
