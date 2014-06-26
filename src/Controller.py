@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """ 
 Main interface of OVPL with the external world.
 Controller interfaces with LabManager and VMPoolManager.

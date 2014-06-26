@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/env python
 
 # Services exposed by the VM Manager
 # The REST url : 

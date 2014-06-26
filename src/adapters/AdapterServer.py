@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/env python
 
 # Author : Avinash <a@vlabs.ac.in>
 # Organization : VLEAD, Virtual-Labs

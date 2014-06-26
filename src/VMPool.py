@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """ 
 VMPool manages a pool of VMs and the resources available for use by the VMs.
 Resources may include RAM, diskspace, IPs, etc.  For now, these resources 

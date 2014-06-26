@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Required by CentOSVZAdapter.py
 NAME_SERVER = "10.4.3.222"
 SUBNET = ["10.2.59.12/28"]

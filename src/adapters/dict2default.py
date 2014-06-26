@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from collections import defaultdict
 
 rec_dd = lambda: defaultdict(rec_dd)

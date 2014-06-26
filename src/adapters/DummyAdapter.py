@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Author: Siddharth 
 # Contact: siddu.druid@gmail.com
 

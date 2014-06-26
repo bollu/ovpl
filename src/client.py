@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """ 
 This is a sample client script, which shows how HTTP Request 
 can be made using HTTPClientRequest 

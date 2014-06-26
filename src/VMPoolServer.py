@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/env python
 
 # Services exposed by the VM Pool Server
 # The REST url : 

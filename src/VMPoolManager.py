@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 VMPoolManager manages a set of VMPools i.e. maintain a list of available VMPools
 and decide which VMPool to use for creating a VM.

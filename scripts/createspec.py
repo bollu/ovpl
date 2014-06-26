@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 This script creates the labspec.json file for all labs using information from
 the developer portal and checks in the json file along with the sources.

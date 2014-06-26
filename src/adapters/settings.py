@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 
 
 VM_MANAGER_PORT = "8089"

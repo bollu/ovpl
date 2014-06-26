@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 class BaseAdapter:
 	def create_vm(lab_spec):
 		raise Exception("BaseAdapter: unimplemented create_vm()")

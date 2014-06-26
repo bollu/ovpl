@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """http://stackoverflow.com/questions/42558/python-and-the-singleton-pattern"""
 
 class Singleton:
