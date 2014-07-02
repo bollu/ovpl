@@ -1,2 +1,2 @@
 def test(logger):
-    pass
+    return True
