@@ -37,13 +37,13 @@ def test(logger):
    
     #sleep for a second
     logger.info("sleeping") 
-    time.sleep(60)
+    time.sleep(5)
     
     logger.info("CURLing")
-    logger.info("curl: {}".format(plumbum.local["curl"]["127.0.0.1:8000"]()))
+    logger.info("curl: {}".format(plumbum.local["curl"]["127.0.0.1:8080"]()))
 
     payload = {"lab_id": "cse02", "lab_url": "https://bitbucket.org/virtuallabs/cse02-programming.git"}
-    response = requests.post("http://localhost:8000/", data=payload)
+    response = requests.post("http://localhost:8080/", data=payload)
  
 
     logger.info("response: {}".format(response))
