@@ -10,6 +10,7 @@ def test(logger):
     adapters_conf["ADAPTER_NAME"] = "CentOSVZAdapter"
     json.dump(adapters_conf, open("../src/adapters/config.json", "w"))
     
+   
     import ControllerServer
     import AdapterServer
 
