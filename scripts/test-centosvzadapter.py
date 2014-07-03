@@ -1,4 +1,4 @@
-import sys, os, plumbum
+import sys, os, plumbum, time
 from multiprocessing import Process
 
 
@@ -22,16 +22,23 @@ def test(logger):
     adapters_conf["ADAPTER_NAME"] = "CentOSVZAdapter"
     json.dump(adapters_conf, open("../src/adapters/config.json", "w"))
     
+    controller_server = None
     with plumbum.local.cwd("../src"):
-        p = Process(target=start_controller_server)
-        p.start()
+        controller_server = Process(target=start_controller_server)
+        controller_server.start()
     
+    adapter_server = None
     with plumbum.local.cwd("../src/adapters"):
-        p = Process(target=start_adapter_server)
-        p.start()
+        adapter_server = Process(target=start_adapter_server)
+        adapter_server.start()
    
     #sleep for a second
-    sleep(1)
+    time.sleep(1)
     logger.info("starting test")
+    
+    logger.info("ending test")
+    controller_server.join()
+    adapter_server.join()
+
     return True
 
