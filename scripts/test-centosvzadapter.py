@@ -25,18 +25,29 @@ def test(logger):
     controller_server = None
     with plumbum.local.cwd("../src"):
         controller_server = Process(target=start_controller_server)
-        controller_server.start()
     
     adapter_server = None
     with plumbum.local.cwd("../src/adapters"):
         adapter_server = Process(target=start_adapter_server)
-        adapter_server.start()
    
-    #sleep for a second
-    time.sleep(1)
     logger.info("starting test")
+     
+    controller_server.start()
+    adapter_server.start()
+   
+
+    #sleep for a second
+    time.sleep(3)
     
+    payload = {"lab_id": "cse02", "lab_url": "https://bitbucket.org/virtuallabs/cse02-programming.git"}
+    response = requests.post("http://localhost:8000", data=payload)
+ 
+
+    logger.info("response: {}".format(response))
+    logger.info("response text: {}".format(response.text))
+
     logger.info("ending test")
+    
     controller_server.join()
     adapter_server.join()
 
