@@ -5,6 +5,5 @@
 
 def test(logger):
     logger.debug("mock test")
-
     ##do whatever you want here
     return True
