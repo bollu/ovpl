@@ -28,7 +28,8 @@ def test(logger):
     json.dump(adapters_conf, open("../src/adapters/config.json", "w"))
     
     controller_server = Process(target=start_controller_server)
-    
+   
+
     adapter_server = Process(target=start_adapter_server)
    
     logger.info("starting test") 
