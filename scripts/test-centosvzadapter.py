@@ -35,7 +35,6 @@ def test(logger):
     controller_server.start()
     adapter_server.start()
    
-
     #sleep for a second
     time.sleep(3)
     
