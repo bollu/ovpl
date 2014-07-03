@@ -4,6 +4,7 @@ python:
 # command to install dependencies
 install:
   - "pip install requests"
+  - "pip install plumbum"
   - "git clone https://github.com/bollu/ovpl-buildbot.git"
     
 # command to run tests
