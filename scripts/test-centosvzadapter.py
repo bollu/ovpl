@@ -27,10 +27,8 @@ def test(logger):
     adapters_conf["ADAPTER_NAME"] = "CentOSVZAdapter"
     json.dump(adapters_conf, open("../src/adapters/config.json", "w"))
     
-    controller_server = Process(target=start_controller_server)
-   
-
-    adapter_server = Process(target=start_adapter_server)
+    controller_server = Process(target=start_controller_server, args=(logger, ))
+    adapter_server = Process(target=start_adapter_server, args=(logger, ))
    
     logger.info("starting test") 
     controller_server.start()
