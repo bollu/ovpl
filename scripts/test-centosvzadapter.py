@@ -30,6 +30,7 @@ def test(logger):
     controller_server = Process(target=start_controller_server, args=(logger, ))
     adapter_server = Process(target=start_adapter_server, args=(logger, ))
    
+    
     logger.info("starting test") 
     controller_server.start()
     adapter_server.start()
