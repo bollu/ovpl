@@ -1,2 +1,2 @@
- def test__():
+def test__():
      return True
