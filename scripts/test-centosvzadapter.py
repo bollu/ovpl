@@ -35,7 +35,7 @@ def test(logger):
     adapter_server.start()
    
     #sleep for a second
-    time.sleep(3)
+    time.sleep(10)
     
     payload = {"lab_id": "cse02", "lab_url": "https://bitbucket.org/virtuallabs/cse02-programming.git"}
     response = requests.post("http://localhost:8000", data=payload)
@@ -46,8 +46,8 @@ def test(logger):
 
     logger.info("ending test")
     
-    controller_server.join()
-    adapter_server.join()
+    controller_server.join(3)
+    adapter_server.join(3)
 
     return True
 
