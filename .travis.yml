@@ -5,7 +5,7 @@ python:
 install:
   - "pip install requests"
   - "pip install plumbum"
-  - "pip install tornado netaddr"
+  - "pip install tornado netaddr sh"
   - "git clone https://github.com/bollu/ovpl-buildbot.git"
     
 # command to run tests
