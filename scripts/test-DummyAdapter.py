@@ -1,3 +1,3 @@
 def test(logger):
-    logger.info("From within test!")
+    logger.info("this test will succeed")
     return True

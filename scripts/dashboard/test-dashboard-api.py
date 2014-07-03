@@ -1,3 +1,2 @@
-def qedest(logger):
-    logger.info("failed test")
+def test():
     return True

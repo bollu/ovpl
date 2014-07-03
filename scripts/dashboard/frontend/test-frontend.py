@@ -1,2 +1,2 @@
-def qqtest__():
+def test(logger, a):
      return True
