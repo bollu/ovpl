@@ -14,7 +14,7 @@ def start_controller_server(logger):
         plumbum.local["python"]["ControllerServer.py"]()
 
 
-def start_adapter_server():
+def start_adapter_server(logger):
     with plumbum.local.cwd("../src/adapters"): 
         logger.info("starting adapter. pwd: {}".format(plumbum.local.cwd))
         plumbum.local["python"]["AdapterServer.py"]()
