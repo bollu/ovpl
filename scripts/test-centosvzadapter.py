@@ -14,7 +14,6 @@ def test(logger):
     import AdapterServer
     import ControllerServer
 
-    
     logger.info("starting test")
     return True
 
