@@ -16,7 +16,5 @@ def test(logger):
 
     
     logger.info("starting test")
-
-
     return True
 
