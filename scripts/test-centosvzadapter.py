@@ -7,12 +7,17 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src', 'adapters')
 
 import json
 
-def start_controller_server():
-    plumbum.local["python"]["ControllerServer.py"]()
+def start_controller_server(logger):
+    with plumbum.local.cwd("../src/"):
+        logger.info("starting controller. pwd: {}".format(plumbum.local.cwd))
+        plumbum.local["ls"]()
+        plumbum.local["python"]["ControllerServer.py"]()
 
 
 def start_adapter_server():
-    plumbum.local["python"]["AdapterServer.py"]()
+    with plumbum.local.cwd("../src/adapters"): 
+        logger.info("starting adapter. pwd: {}".format(plumbum.local.cwd))
+        plumbum.local["python"]["AdapterServer.py"]()
 
 
 def test(logger):
@@ -22,16 +27,11 @@ def test(logger):
     adapters_conf["ADAPTER_NAME"] = "CentOSVZAdapter"
     json.dump(adapters_conf, open("../src/adapters/config.json", "w"))
     
-    controller_server = None
-    with plumbum.local.cwd("../src"):
-        controller_server = Process(target=start_controller_server)
+    controller_server = Process(target=start_controller_server)
     
-    adapter_server = None
-    with plumbum.local.cwd("../src/adapters"):
-        adapter_server = Process(target=start_adapter_server)
+    adapter_server = Process(target=start_adapter_server)
    
-    logger.info("starting test")
-     
+    logger.info("starting test") 
     controller_server.start()
     adapter_server.start()
    
