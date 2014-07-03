@@ -1,6 +1,6 @@
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src', 'adapter'))
 
 import json
 def test(logger):
@@ -14,6 +14,9 @@ def test(logger):
     import AdapterServer
     import ControllerServer
 
-
+    
     logger.info("starting test")
+
+
+    return True
 
