@@ -4,11 +4,14 @@ python:
 # command to install dependencies
 install:
   - "pip install requests"
-  - "git clone https://github.com/bollu/ovpl-buildbot.git"
+  - "git clone https://github.com/bollu/ovpl-buildbot.git buildbot"
   - "ls"
-  - "ls ovpl-buildbot"
-  - "cp ovpl-buildbot/client-travis.py ."
     
 # command to run tests
 script:
+  - "ls"
+
+  - "ls ovpl-buildbot"
+  - "cp ovpl-buildbot/client-travis.py ."
+    
   -  "python travis.py"
