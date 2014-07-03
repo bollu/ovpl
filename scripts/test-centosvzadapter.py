@@ -9,9 +9,9 @@ def test(logger):
     adapters_conf = json.load(open("../src/adapters/config.json"))
     adapters_conf["ADAPTER_NAME"] = "CentOSVZAdapter"
     json.dump(adapters_conf, open("../src/adapters/config.json", "w"))
-
-    import AdapterServer
+    
     import ControllerServer
+    import AdapterServer
 
     logger.info("starting test")
     return True
