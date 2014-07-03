@@ -9,7 +9,6 @@ install:
 # command to run tests
 script:
   - "ls"
-
   - "ls ovpl-buildbot"
   - "cp ovpl-buildbot/client-travis.py ."
     
