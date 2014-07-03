@@ -1,6 +1,6 @@
 import sys, os, plumbum, time, requests
 from multiprocessing import Process
-
+from IPy import IP
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src', 'adapters'))
@@ -48,11 +48,16 @@ def test(logger):
 
     logger.info("response: {}".format(response))
     logger.info("response text: {}".format(response.text))
-
+    
     logger.info("ending test")
     
     controller_server.join(3)
     adapter_server.join(3)
-
-    return True
+    #try to construct IP from return value - TODO: change conrollerserver to return 200 on success and 400 on failure so we can check
+    #error codes.
+    try:
+        ip = IP(response.text)
+        return True
+    except Exception, e:
+        return False
 
