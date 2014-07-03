@@ -4,8 +4,7 @@ python:
 # command to install dependencies
 install:
   - "pip install requests"
-  - "git clone https://github.com/bollu/ovpl-buildbot.git buildbot"
-  - "ls"
+  - "git clone https://github.com/bollu/ovpl-buildbot.git"
     
 # command to run tests
 script:
