@@ -38,7 +38,7 @@ def test(logger):
     time.sleep(10)
     
     payload = {"lab_id": "cse02", "lab_url": "https://bitbucket.org/virtuallabs/cse02-programming.git"}
-    response = requests.post("http://localhost:8000", data=payload)
+    response = requests.post("http://localhost:8000/", data=payload)
  
 
     logger.info("response: {}".format(response))
