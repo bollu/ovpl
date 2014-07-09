@@ -12,10 +12,11 @@ import json
 
 def run_in_context(logger, workingdir, pyfile):
     from plumbum import local 
+    py = local["python2.7"
 
     abspath = os.path.abspath(os.path.join(workingdir, pyfile))
     logger.info("running file {}. cwd: {}. desired: {}".format(pyfile, plumbum.local.cwd, abspath)
-    local["python2.7"](abspath)
+    py(abspath)
 
 def start_controller_server(logger):
     logger.info("starting controller".format(plumbum.local.cwd))
