@@ -1,5 +1,7 @@
 import sys, os, plumbum, time, requests
 from multiprocessing import Process
+from threading import Thread
+
 from IPy import IP
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
@@ -27,16 +29,16 @@ def test(logger):
     adapters_conf["ADAPTER_NAME"] = "CentOSVZAdapter"
     json.dump(adapters_conf, open("../src/adapters/config.json", "w"))
     
-    controller_server = Process(target=start_controller_server, args=(logger, ))
-    adapter_server = Process(target=start_adapter_server, args=(logger, ))
+    controller_server = Thread(target=start_controller_server, args=(logger, ))
+    adapter_server = Thread(target=start_adapter_server, args=(logger, ))
    
     
-    logger.info("starting test") 
+    logger.info("starting controller and adapter servers") 
     controller_server.start()
     adapter_server.start()
    
     #sleep for a second
-    logger.info("sleeping") 
+    logger.info("sleeping so that server can startup IOLoop") 
     time.sleep(5)
     
     payload = {"lab_id": "cse02", "lab_src_url": "https://bitbucket.org/virtuallabs/cse02-programming.git"}
