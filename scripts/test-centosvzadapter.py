@@ -35,8 +35,13 @@ def test(logger):
     
     logger.info("starting controller and adapter servers") 
     controller_server.start()
+    
+    time.sleep(5)
+    
     adapter_server.start()
-   
+    
+    return True
+
     #sleep for a second
     logger.info("sleeping so that server can startup IOLoop") 
     time.sleep(5)
