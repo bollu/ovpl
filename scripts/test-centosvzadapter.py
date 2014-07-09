@@ -43,18 +43,11 @@ def test(logger):
     time.sleep(5)
     adapter_server.start()
 
-    #HACK------------------------
-    time.sleep(5)
-
-    controller_server.join(3)
-    adapter_server.join(3)
-
-    return True
-    #END HACK-------------
 
     #sleep for a second
     logger.info("sleeping so that server can startup IOLoop")
     time.sleep(5)
+    logger.info("woke up")
 
     payload = {"lab_id": "cse02", "lab_src_url": "https://bitbucket.org/virtuallabs/cse02-programming.git"}
     response = requests.post("http://localhost:8080/", data=payload)
