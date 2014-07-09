@@ -9,17 +9,19 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src', 'adapters')
 
 import json
 
+def run_in_context(workingdir, pyfile):
+    abspath = os.path.join(workingdir, pyfile)
+    plumbum.local["python2.7"]("python2.7 {}".format(abspath))
+
 def start_controller_server(logger):
-    with plumbum.local.cwd("../src/"):
-        logger.info("starting controller. pwd: {}".format(plumbum.local.cwd))
-        plumbum.local["ls"]()
-        plumbum.local["python2.7"]("ControllerServer.py")
+    logger.info("starting controller".format(plumbum.local.cwd))
+    run_in_context("../src", "ControllerServer.py")
 
 
 def start_adapter_server(logger):
     with plumbum.local.cwd("../src/adapters"): 
-        logger.info("starting adapter. pwd: {}".format(plumbum.local.cwd))
-        plumbum.local["python2.7"]("AdapterServer.py")
+        logger.info("starting adapter".format(plumbum.local.cwd))
+        run_in_context("../src/adapters", "AdapterServer.py")
 
 
 def test(logger):
@@ -34,13 +36,19 @@ def test(logger):
    
     
     logger.info("starting controller and adapter servers") 
-    controller_server.start()
     
+    controller_server.start() 
     time.sleep(5)
-    
     adapter_server.start()
     
+    #HACK------------------------
+    time.sleep(5)
+    
+    controller_server.join(3)
+    adapter_server.join(3)
+    
     return True
+    #END HACK-------------
 
     #sleep for a second
     logger.info("sleeping so that server can startup IOLoop") 
