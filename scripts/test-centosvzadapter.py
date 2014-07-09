@@ -9,19 +9,20 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src', 'adapters')
 
 import json
 
-def run_in_context(workingdir, pyfile):
-    abspath = os.path.join(workingdir, pyfile)
+def run_in_context(logger, workingdir, pyfile):
+    abspath = os.path.abspath(os.path.join(workingdir, pyfile))
+    logger.info("running file {}. cwd: {}. desired: {}".format(pyfile, plumbum.local.cwd, abspath)
     plumbum.local["python2.7"](format(abspath))
 
 def start_controller_server(logger):
     logger.info("starting controller".format(plumbum.local.cwd))
-    run_in_context("../src", "ControllerServer.py")
+    run_in_context(logger, "../src", "ControllerServer.py")
 
 
 def start_adapter_server(logger):
     with plumbum.local.cwd("../src/adapters"): 
         logger.info("starting adapter".format(plumbum.local.cwd))
-        run_in_context("../src/adapters", "AdapterServer.py")
+        run_in_context(logger, "../src/adapters", "AdapterServer.py")
 
 
 def test(logger):
