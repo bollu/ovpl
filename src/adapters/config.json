@@ -4,5 +4,14 @@
 	"CREATE_URI":"/api/1.0/vm/create",
 	"DESTROY_URI":"/api/1.0/vm/destroy",
 	"RESTART_URI":"/api/1.0/vm/restart",
-	"LOG_FILE_PATH": "./log/adapter.log"
+	"LOG_FILE_PATH": "./log/adapter.log",
+
+	"LOGGING_CONFIGURATION": {
+	    "SERVER_PORT": "8239",
+	    "SERVER_HOSTNAME": "127.0.0.1"
+	},
+
+	"API_ENDPOINTS": {
+		"LOGGING_URI_ENDPOINT": "/log/"
+	}
 }

@@ -10,10 +10,8 @@ def create_logger(name, file_path, logging_hostname, logging_port, logging_endpo
     #if the directory does not exist, create it
     if not os.path.exists(directory):
         os.makedirs(directory)
-
-   logger = logging.getLogger(name)
-
-   logger.setLevel(logging.DEBUG)   # make log level a setting
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)   # make log level a setting
 
     #don't attach the same handler multiple times
     if logger.handlers == []:
