@@ -13,10 +13,10 @@ def create_logger(name, file_path, logging_hostname, logging_port, logging_endpo
 
     logger = logging.getLogger(name)
 
-    logger.setLevel(logging.DEBUG)   # make log level a setting
-    
+   logger.setLevel(logging.DEBUG)   # make log level a setting
+
     #don't attach the same handler multiple times
-    if logger.handlers == []:
+    iflogger.handlers == []:
         # Add the log message handler to the logger
         timed_rotating_handler = TimedRotatingFileHandler(
                                     file_path, when='midnight', backupCount=5)
@@ -25,15 +25,15 @@ def create_logger(name, file_path, logging_hostname, logging_port, logging_endpo
             '%(asctime)s - %(levelname)s : [%(filename)s:%(lineno)d] : %(message)s',
             datefmt='%Y-%m-%d %I:%M:%S %p')
         timed_rotating_handler.setFormatter(formatter)
-        logger.addHandler(timed_rotating_handler)
-        
+       logger.addHandler(timed_rotating_handler)
+
 
         #HACK: DEBUG CODE. DO DELETE BEFORE CHECKIN
         print logging_hostname + ":" + logging_port + " api: " + logging_endpoint
         #create an HTTP handler to connect to our logging endpoint.
         #http_handler = HTTPHandler(host=(logging_hostname + ":" + logging_port), url=logging_endpoint, method="POST")
         http_handler = HTTPHandler(host="127.0.0.1:8239", url="/log/", method="POST")
-        logger.addHandler(http_handler)
+       logger.addHandler(http_handler)
 
 
 
@@ -42,8 +42,8 @@ def create_logger(name, file_path, logging_hostname, logging_port, logging_endpo
 def get_logger(logger_name):
     logger = logging.getLogger(logger_name)
     #if the logger has been created, then it would have had handler attached
-    assert logger.handlers != []
-    
+    assertlogger.handlers != []
+
     return logger
 
 def get_controller_logger():
@@ -76,7 +76,7 @@ def setup_controller_log(config_spec):
 
     log_hostname = __load_logging_hostname(config_spec)
     log_port = __load_logging_port(config_spec)
-    log_endpoint = __load_logging_endpoint(config_spec) 
+    log_endpoint = __load_logging_endpoint(config_spec)
     create_logger("controller", log_path, log_hostname, log_port, log_endpoint)
 
 def setup_vmmanager_log(config_spec):
@@ -84,8 +84,8 @@ def setup_vmmanager_log(config_spec):
 
     log_hostname = __load_logging_hostname(config_spec)
     log_port = __load_logging_port(config_spec)
-    log_endpoint = __load_logging_endpoint(config_spec) 
-    
+    log_endpoint = __load_logging_endpoint(config_spec)
+
     create_logger("vmmanager", log_path, log_hostname, log_port, log_endpoint)
 
 def setup_adapter_log(config_spec):
@@ -93,5 +93,5 @@ def setup_adapter_log(config_spec):
 
     log_hostname = __load_logging_hostname(config_spec)
     log_port = __load_logging_port(config_spec)
-    log_endpoint = __load_logging_endpoint(config_spec) 
+    log_endpoint = __load_logging_endpoint(config_spec)
     create_logger("adapter", log_path, log_hostname, log_port, log_endpoint)

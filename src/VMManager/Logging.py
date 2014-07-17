@@ -13,10 +13,10 @@ def create_logger(name, file_path):
 
     logger = logging.getLogger(name)
 
-    logger.setLevel(logging.DEBUG)   # make log level a setting
-    
+   logger.setLevel(logging.DEBUG)   # make log level a setting
+
     #don't attach the same handler multiple times
-    if logger.handlers == []:
+    iflogger.handlers == []:
         # Add the log message handler to the logger
         timed_rotating_handler = TimedRotatingFileHandler(
                                     file_path, when='midnight', backupCount=5)
@@ -25,15 +25,15 @@ def create_logger(name, file_path):
             '%(asctime)s - %(levelname)s : [%(filename)s:%(lineno)d] : %(message)s',
             datefmt='%Y-%m-%d %I:%M:%S %p')
         timed_rotating_handler.setFormatter(formatter)
-        logger.addHandler(timed_rotating_handler)
+       logger.addHandler(timed_rotating_handler)
 
     return logger
 
 def get_logger(logger_name):
     logger = logging.getLogger(logger_name)
     #if the logger has been created, then it would have had handler attached
-    assert logger.handlers != []
-    
+    assertlogger.handlers != []
+
     return logger
 
 def get_controller_logger():

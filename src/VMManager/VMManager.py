@@ -51,30 +51,30 @@ if "check_output" not in dir(subprocess):
 def execute(command):
     # do some validation
     try:
-         logger.info("Command executed: " + command)
+        logger.info("Command executed: " + command)
         return subprocess.check_output(command, shell=True)
     except Exception, e:
-         logger.error("Execution failed: " + str(e))
+        logger.error("Execution failed: " + str(e))
         return "Error executing the command: " + str(e)
 
 def running_time():
-     logger.info("Command executed: uptime")
+    logger.info("Command executed: uptime")
     return execute("uptime")
 
 def mem_usage():
-     logger.info("Command executed: free -mg")
+    logger.info("Command executed: free -mg")
     return execute("free -mg")
 
 def disk_usage():
-     logger.info("Command executed: df -h")
+    logger.info("Command executed: df -h")
     return execute("df -h")
 
 def running_processes():
-     logger.info("Command executed: ps -e -o command")
+    logger.info("Command executed: ps -e -o command")
     return execute("ps -e -o command")
 
 def cpu_load():
-     logger.info("Command executed: ps -e -o pcpu")
+    logger.info("Command executed: ps -e -o pcpu")
     return execute("ps -e -o pcpu | awk '{s+=$1} END {print s\"%\"}'")
 
 def test_lab(lab_src_url, version=None):
@@ -108,20 +108,20 @@ def test_lab(lab_src_url, version=None):
 
     def clone_repo(repo_name):
         clone_cmd = "git clone %s %s%s" % (lab_src_url, GIT_CLONE_LOC,repo_name)
-         logger.debug(clone_cmd)
+        logger.debug(clone_cmd)
         try:
             subprocess.check_call(clone_cmd, shell=True)
         except Exception, e:
-             logger.error("git clone failed for repo %s: %s" % (repo_name, str(e)))
+            logger.error("git clone failed for repo %s: %s" % (repo_name, str(e)))
             raise e
 
     def pull_repo(repo_name):
         pull_cmd = "git --git-dir=%s/.git pull" % (GIT_CLONE_LOC + repo_name)
-         logger.debug(pull_cmd)
+        logger.debug(pull_cmd)
         try:
             subprocess.check_call(pull_cmd, shell=True)
         except Exception, e:
-             logger.error("git pull failed for repo %s: %s" % (repo_name, str(e)))
+            logger.error("git pull failed for repo %s: %s" % (repo_name, str(e)))
             raise e
 
     def checkout_version(repo_name):
@@ -129,25 +129,25 @@ def test_lab(lab_src_url, version=None):
             try:
                 checkout_cmd = shlex.split("git --git-dir=%s checkout %s" \
                                     % ((GIT_CLONE_LOC + repo_name), version))
-                 logger.debug(checkout_cmd)
+                logger.debug(checkout_cmd)
                 subprocess.check_call(checkout_cmd)
             except Exception, e:
-                 logger.error("git checkout failed for repo %s tag %s: %s" \
+                logger.error("git checkout failed for repo %s tag %s: %s" \
                                     % (repo_name, version, str(e)))
                 raise e
 
     def get_lab_spec(repo_name):
         repo_path = GIT_CLONE_LOC + repo_name + LAB_SPEC_LOC
         if not os.path.exists(repo_path):
-             logger.error("Lab spec file not found")
+            logger.error("Lab spec file not found")
             raise LabSpecInvalid("Lab spec file not found")
         try:
             return json.loads(open(repo_path).read())
         except Exception, e:
-             logger.error("Lab spec JSON invalid: " + str(e))
+            logger.error("Lab spec JSON invalid: " + str(e))
             raise LabSpecInvalid("Lab spec JSON invalid: " + str(e))
 
-     logger.info("Starting test_lab")
+    logger.info("Starting test_lab")
     repo_name = construct_repo_name()
     if repo_exists(repo_name):
         pull_repo(repo_name)
@@ -170,10 +170,10 @@ def test_lab(lab_src_url, version=None):
         lar = LabActionRunner(get_runtime_actions_steps(lab_spec))
         lar.run_init_lab()
         lar.run_start_lab()
-         logger.info("Finishing test_lab: Success")
+        logger.info("Finishing test_lab: Success")
         return "Success"
     except Exception, e:
-         logger.error("VMManager.test_lab failed: " + str(e))
+        logger.error("VMManager.test_lab failed: " + str(e))
         return "Test lab failed"
 
 
