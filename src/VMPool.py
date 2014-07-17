@@ -22,7 +22,7 @@ from State import State
 CREATE_PATH = "/api/1.0/vm/create"
 DESTROY_PATH = "/api/1.0/vm/destroy"
 
-get_logger = Logging.get_controller_logger()
+logger = Logging.get_controller_logger()
 
 class VMPool:
     """ Manages a pool of VMs or VMProxy's """

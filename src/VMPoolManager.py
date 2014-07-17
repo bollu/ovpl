@@ -9,7 +9,7 @@ import json
 import os.path
 from State import State
 
-get_logger = Logging.get_controller_logger()
+logger = Logging.get_controller_logger()
 
 class VMPoolManager:
 

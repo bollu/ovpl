@@ -15,7 +15,7 @@ import Logging
 #LAB_SPEC_LOC = "/scripts/labspec.json"
 #TEST_LAB_API_URI = '/api/1.0/test-lab'
 
-get_logger = Logging.get_controller_logger()
+logger = Logging.get_controller_logger()
 
 class LabSpecInvalid(Exception):
     def __init__(self, msg):

@@ -13,7 +13,7 @@ import VMPoolManager
 import Logging
 from State import State
 
-get_logger = Logging.get_controller_logger()
+logger = Logging.get_controller_logger()
 
 class Controller:
     def __init__(self):

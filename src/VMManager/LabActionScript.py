@@ -4,7 +4,7 @@ import os.path
 import Logging
 
 
-get_logger = Logging.get_vmmanager_logger()
+logger = Logging.get_vmmanager_logger()
 
 class EmptyLabActionError(Exception):
     pass

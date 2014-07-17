@@ -25,7 +25,7 @@ from LabActionRunner import LabActionRunner
 GIT_CLONE_LOC = "/root/VMManager/lab-repo-cache/"
 LAB_SPEC_LOC = "/scripts/labspec.json"
 
-get_logger = Logging.get_vmmanager_logger()
+logger = Logging.get_vmmanager_logger()
 
 class LabSpecInvalid(Exception):
     def __init__(self, msg):

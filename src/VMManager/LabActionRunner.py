@@ -3,7 +3,7 @@ import json
 import Logging
 from LabActionScript import LabActionScript
 
-get_logger = Logging.get_vmmanager_logger()
+logger = Logging.get_vmmanager_logger()
 
 class LabActionRunner:
     """
