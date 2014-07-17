@@ -40,7 +40,7 @@ def create_logger(name, file_path, logging_hostname, logging_port, logging_endpo
 def get_logger(logger_name):
     logger = logging.getLogger(logger_name)
     #if the logger has been created, then it would have had handler attached
-    assertlogger.handlers != []
+    assert logger.handlers != []
 
     return logger
 
