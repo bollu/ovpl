@@ -1,4 +1,4 @@
-""" 
+"""
 Main interface of OVPL with the external world.
 Controller interfaces with LabManager and VMPoolManager.
 
@@ -13,7 +13,7 @@ import VMPoolManager
 import Logging
 from State import State
 
-get_logger = Logging.get_controller_logger
+get_logger = Logging.get_controller_logger()
 
 class Controller:
     def __init__(self):
@@ -22,39 +22,39 @@ class Controller:
 
 
     def test_lab(self, lab_id, lab_src_url, revision_tag=None):
-        get_logger().debug("Controller.test_lab() for lab ID %s and git url %s" \
+         logger.debug("Controller.test_lab() for lab ID %s and git url %s" \
                             % (lab_id, lab_src_url))
         try:
             lab_spec = LabManager.get_lab_reqs(lab_id, lab_src_url, revision_tag)
             self.update_lab_spec(lab_spec, lab_id, lab_src_url, revision_tag)
             if lab_spec['lab']['runtime_requirements']['hosting'] == 'dedicated':
-               """ TODO: Undeploy , fnd proper place to invoke undeploy""" 
+               """ TODO: Undeploy , fnd proper place to invoke undeploy"""
                self.undeploy_lab(lab_id)
             vmpoolmgr = VMPoolManager.VMPoolManager()
-            get_logger().debug("Controller: test_lab(); invoking create_vm() on vmpoolmgr")
+             logger.debug("Controller: test_lab(); invoking create_vm() on vmpoolmgr")
             lab_state = vmpoolmgr.create_vm(lab_spec)
-            get_logger().debug("Controller: test_lab(): Returned from VMPool = %s" % (str(lab_state)))
+             logger.debug("Controller: test_lab(): Returned from VMPool = %s" % (str(lab_state)))
             ip = lab_state['vm_info']['vm_ip']
             port = lab_state['vm_info']['vmm_port']
             vmmgrurl = "http://" + ip
-            get_logger().debug("Controller: test_lab(): vmmgrurl = %s" % (vmmgrurl))
+             logger.debug("Controller: test_lab(): vmmgrurl = %s" % (vmmgrurl))
             try:
                 (ret_val, ret_str) = LabManager.test_lab(vmmgrurl, port, lab_src_url, revision_tag)
                 if(ret_val):
                     self.update_state(lab_state)
-                    get_logger().info("Controller: test_lab(): test succcessful")
+                     logger.info("Controller: test_lab(): test succcessful")
                     return ip
                 else:
-                    get_logger().error("Controller: test_lab(); Test failed with error:" + str(ret_str))
+                     logger.error("Controller: test_lab(); Test failed with error:" + str(ret_str))
                     return "Test failed: See log file for errors"
             except Exception, e:
-                get_logger().error("Controller: test_lab(); Test failed with error: " + str(e))
+                 logger.error("Controller: test_lab(); Test failed with error: " + str(e))
                 return "Test failed: See log file for errors"
-                """ TODO: Garbage collection clean up for the created VM """ 
+                """ TODO: Garbage collection clean up for the created VM """
             finally:
                 self.system.save()
         except Exception, e:
-            get_logger().error("Controller: test_lab(): Test failed with error: " + str(e))
+             logger.error("Controller: test_lab(): Test failed with error: " + str(e))
             return "Test failed: See log file for errors"
 
     def update_lab_spec(self, lab_spec, lab_id, lab_src_url, revision_tag):
@@ -70,7 +70,7 @@ class Controller:
         self.system.state.append(state)
 
     def undeploy_lab(self, lab_id):
-        get_logger().debug("Controller.undeploy_lab for lab_id %s" % lab_id)
+         logger.debug("Controller.undeploy_lab for lab_id %s" % lab_id)
         vmpoolmgr = VMPoolManager.VMPoolManager()
         vmpoolmgr.undeploy_lab(lab_id)
         return "Success"

@@ -4,10 +4,10 @@
 """ A module for managing VMs on CentOS - OpenVZ platform. """
 
 """ Open issues with the current version:
-    1. Not designed for concurrent use e.g. find_available_ip uses vzlist for 
+    1. Not designed for concurrent use e.g. find_available_ip uses vzlist for
         finding available ip, but if a vm is in the process of being created,
         vzlist will probably not list it, resulting in duplicate ip address.
-        These functionalities should be moved up to VMPool for enabling 
+        These functionalities should be moved up to VMPool for enabling
         concurrency.
     2. Very little of any kind of error handling is done.
     3. Logging has not been implemented yet.
@@ -68,7 +68,7 @@ if "check_output" not in dir(subprocess):
 VZCTL = "/usr/sbin/vzctl"
 VZLIST = "/usr/sbin/vzlist -a"
 IP_ADDRESS_REGEX = r"[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}"
-#IP_ADDRESS_REGEX = 
+#IP_ADDRESS_REGEX =
 # "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
 CENTOSVZ_LOGGER = Logging.get_adapter_logger()
 
@@ -106,11 +106,11 @@ class CentOSVZAdapter(object):
         except subprocess.CalledProcessError, e:
             CENTOSVZ_LOGGER.error("Error creating VM: " + str(e))
             #raise e
-            return 105 
+            return 105
 
     def init_vm(self, vm_id):
         CENTOSVZ_LOGGER.debug("CentOSVZAdapter: init_vm(): vm_id = %s" % vm_id)
-        
+
 	success = True
 
 	success = success and  copy_vm_manager_files(vm_id)
@@ -141,7 +141,7 @@ class CentOSVZAdapter(object):
     def start_vm(self, vm_id):
         self.restart_vm(self, vm_id) #HACK
 
-    
+
     def start_vm_manager(self, vm_id):
         command = VZCTL + " exec " + str(vm_id) + " \"su - root -c \'python " + \
             settings.VM_MANAGER_DEST_DIR + "/" + settings.VM_MANAGER_SCRIPT + " &\'\""
@@ -291,10 +291,10 @@ def test():
     destroy_vm("99100")
     #destroy_vm("99101")
     #destroy_vm("99102")
-    #destroy_vm("99103")    
+    #destroy_vm("99103")
 
 if __name__ == "__main__":
     # Start an HTTP server and wait for invocation
-    # Parse the invocation command and route to 
+    # Parse the invocation command and route to
     # appropriate methods.
     test()

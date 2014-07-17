@@ -4,11 +4,11 @@ import os.path
 import Logging
 
 
-get_logger = Logging.get_vmmanager_logger
+get_logger = Logging.get_vmmanager_logger()
 
 class EmptyLabActionError(Exception):
     pass
-        
+
 class LabActionScript:
     """Runs an action which is usually a bash or Python script."""
     ACTION_EMPTY        = 0x1
@@ -32,7 +32,7 @@ class LabActionScript:
     BACKUP_SCRIPT_KEY   = "backup"
     STATS_SCRIPT_KEY    = "stats"
     PUBLISH_SCRIPT_KEY  = "publish"
-    
+
     def __init__(self, cmd):
         self._cmd = cmd.strip()
         self._state = LabActionScript.ACTION_EMPTY
@@ -40,24 +40,24 @@ class LabActionScript:
     def run(self):
         """Runs a command. Waits for the command to finish."""
         if len(self._cmd) == 0:
-            get_logger().error("LabActionScript::run() - No command to run")
+             logger.error("LabActionScript::run() - No command to run")
             raise EmptyLabActionError("No command to run")
         try:
         	#self._cmd[0] = os.path.join(self._path_prefix, self._cmd[0])
-            get_logger().debug("LabActionScript::run() - " + self._cmd)
+             logger.debug("LabActionScript::run() - " + self._cmd)
             subprocess.check_call(self._cmd, shell=True)
             self._state = LabActionScript.ACTION_COMPLETED
         except subprocess.CalledProcessError as cpe:
-            get_logger().error("LabActionScript::run() - " + str(cpe))
+             logger.error("LabActionScript::run() - " + str(cpe))
             self._state = LabActionScript.ACTION_UNSUCCESSFUL
             print cpe
         except OSError as ose:
-            get_logger().error("LabActionScript::run() - " + str(ose))
+             logger.error("LabActionScript::run() - " + str(ose))
             self._state = LabActionScript.ACTION_UNSUCCESSFUL
             print ose
 
         return self
-    
+
     def run_async(self):
     	""" TODO: PROVIDE A DECENT IMPLEMENTATION!!"""
         """Runs a command asynchronously."""
@@ -89,7 +89,7 @@ if __name__ == '__main__':
         except EmptyLabActionError:
             pass
         assert(action.empty() == True)
-    
+
     def testGitCloneAction():
         action = LabActionScript("git clone https://bitbucket.org/deviprasad/itworkshop2-spring-2014.git")
         action.run()
