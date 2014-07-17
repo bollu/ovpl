@@ -11,12 +11,12 @@ def create_logger(name, file_path, logging_hostname, logging_port, logging_endpo
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-    logger = logging.getLogger(name)
+   logger = logging.getLogger(name)
 
    logger.setLevel(logging.DEBUG)   # make log level a setting
 
     #don't attach the same handler multiple times
-    iflogger.handlers == []:
+    if logger.handlers == []:
         # Add the log message handler to the logger
         timed_rotating_handler = TimedRotatingFileHandler(
                                     file_path, when='midnight', backupCount=5)
@@ -25,7 +25,7 @@ def create_logger(name, file_path, logging_hostname, logging_port, logging_endpo
             '%(asctime)s - %(levelname)s : [%(filename)s:%(lineno)d] : %(message)s',
             datefmt='%Y-%m-%d %I:%M:%S %p')
         timed_rotating_handler.setFormatter(formatter)
-       logger.addHandler(timed_rotating_handler)
+        logger.addHandler(timed_rotating_handler)
 
 
         #HACK: DEBUG CODE. DO DELETE BEFORE CHECKIN
@@ -33,7 +33,7 @@ def create_logger(name, file_path, logging_hostname, logging_port, logging_endpo
         #create an HTTP handler to connect to our logging endpoint.
         #http_handler = HTTPHandler(host=(logging_hostname + ":" + logging_port), url=logging_endpoint, method="POST")
         http_handler = HTTPHandler(host="127.0.0.1:8239", url="/log/", method="POST")
-       logger.addHandler(http_handler)
+        logger.addHandler(http_handler)
 
 
 
